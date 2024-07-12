@@ -5,7 +5,7 @@ import kubernetes
 import json
 import subprocess
 
-from easyaas.helpers import update_condition, load_from_yaml, update_array, current_file_path
+from easyaas.helpers import update_condition, current_file_path
 from .consts import WATCHED_RESOURCE_GROUP, WATCHED_RESOURCE_NAME, MANAGED_BY, EASYAAS_PREFIX
 
 # Controller configuration
@@ -21,7 +21,9 @@ def configure(memo: kopf.Memo, settings: kopf.OperatorSettings, **_):
     try:
         kubernetes.config.load_incluster_config()
     except kubernetes.config.ConfigException:
-        kubernetes.config.load_kube_config(config_file='~/.kube/config', context='k3d-easyaas')
+        kubernetes.config.load_kube_config(config_file='~/.kube/config'
+                                           #, context='k3d-easyaas'
+                                           )
 
 
 # Read the resource config from the CR

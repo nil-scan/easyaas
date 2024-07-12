@@ -12,7 +12,7 @@ WORKDIR /app
 ADD poetry.lock poetry.toml pyproject.toml /app
 RUN poetry install
 
-ADD ./controllers /app/controllers
+ADD ./easyaas /app/easyaas
 ADD ./bin /app/bin
 
 RUN  curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash

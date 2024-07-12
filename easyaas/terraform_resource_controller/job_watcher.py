@@ -10,13 +10,6 @@ class NoOwnerException(RuntimeError):
 
 @kopf.on.event('batch/v1', 'job', labels={'managed-by': MANAGED_BY})
 def watch_job(logger, meta: kopf.Meta, namespace, name, status: kopf.Status, **_):
-    # Get the owner resource
-    owner_refs = meta.get('ownerReferences', {})
-    ctrl_owners = [ owner for owner in owner_refs if owner.get('controller', False) == True ]
-    if len(ctrl_owners) != 1:
-        logger.debug("No Controller owner found, skipping")
-        return
-    
     try:
         owner = get_owner(meta)
     except NoOwnerException:
