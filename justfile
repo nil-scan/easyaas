@@ -5,8 +5,7 @@ build: zip build-docker
 local-dev: zip repo-server poetry run-all
 
 install:
-  kubectl apply -f controllers/crds
-  kubectl apply -f resources/dns-record
+  kubectl apply -f easyaas/terraform_resource_controller/crds
 
 zip:
 	local-testing/scripts/zip

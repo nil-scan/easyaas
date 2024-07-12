@@ -1,8 +1,8 @@
 import os
 import kopf
 import logging
-from ..helpers import update_condition, load_from_yaml, update_array, current_file_path
 import subprocess
+from easyaas.helpers import update_condition, load_from_yaml, update_array, current_file_path
 
 @kopf.on.startup()
 def configure(memo: kopf.Memo, settings: kopf.OperatorSettings, **_):

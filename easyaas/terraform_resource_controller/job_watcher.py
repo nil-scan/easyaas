@@ -2,9 +2,11 @@
 import kubernetes
 import kopf
 
+from easyaas.helpers import current_timestamp
 from .consts import JOB_FINALIZER, WATCHED_RESOURCE_NAME, MANAGED_BY
-from ..helpers import current_timestamp
 
+class NoOwnerException(RuntimeError):
+    pass
 
 @kopf.on.event('batch/v1', 'job', labels={'managed-by': MANAGED_BY})
 def watch_job(logger, meta: kopf.Meta, namespace, name, status: kopf.Status, **_):
@@ -15,7 +17,10 @@ def watch_job(logger, meta: kopf.Meta, namespace, name, status: kopf.Status, **_
         logger.debug("No Controller owner found, skipping")
         return
     
-    owner = ctrl_owners[0]
+    try:
+        owner = get_owner(meta)
+    except NoOwnerException:
+        return
     crdapi = kubernetes.client.CustomObjectsApi()
     (group, version) = owner.get('apiVersion', "").split("/")
 
@@ -82,3 +87,12 @@ def watch_job(logger, meta: kopf.Meta, namespace, name, status: kopf.Status, **_
             # and the garbage collection deletes the child jobs
             # It's safe to ignore it
             return
+        
+def get_owner(meta):
+    # Get the owner resource
+    owner_refs = meta.get('ownerReferences', {})
+    ctrl_owners = [ owner for owner in owner_refs if owner.get('controller', False) == True ]
+    if len(ctrl_owners) != 1:
+        raise NoOwnerException(f"No Controller owner found on {meta['namespace']}/{meta['name']}, skipping")
+    
+    return ctrl_owners[0]

@@ -1,4 +1,4 @@
-from controllers.helpers import load_from_yaml, add_annotations, update_array
+from easyaas.helpers import load_from_yaml, add_annotations, update_array
 
 def test_load_from_yaml(): 
     yaml = """

@@ -5,7 +5,7 @@ import kubernetes
 import json
 import subprocess
 
-from ..helpers import update_condition, load_from_yaml, update_array, current_file_path
+from easyaas.helpers import update_condition, load_from_yaml, update_array, current_file_path
 from .consts import WATCHED_RESOURCE_GROUP, WATCHED_RESOURCE_NAME, MANAGED_BY, EASYAAS_PREFIX
 
 # Controller configuration
