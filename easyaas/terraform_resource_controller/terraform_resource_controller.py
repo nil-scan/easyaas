@@ -6,7 +6,7 @@ import json
 import subprocess
 
 from easyaas.helpers import update_condition, current_file_path
-from .consts import WATCHED_RESOURCE_GROUP, WATCHED_RESOURCE_NAME, MANAGED_BY, EASYAAS_PREFIX
+from .consts import WATCHED_RESOURCE_GROUP, WATCHED_RESOURCE_NAME, MANAGED_BY
 
 # Controller configuration
 @kopf.on.startup()
@@ -63,8 +63,8 @@ def on_change_terraformresource(namespace, name, body, meta, spec, **_):
     subprocess.run(
         [
             'helm', 'upgrade', '--install',
-            '{}-{}'.format(EASYAAS_PREFIX, name),
-            '{}/charts/terraform-job'.format(current_file_path()),
+            f'{name}.{WATCHED_RESOURCE_NAME}.{WATCHED_RESOURCE_GROUP}',
+            f'{current_file_path()}/charts/terraform-job',
             '--debug',
             '--namespace', namespace,
             '--values=-', # Send values via stdin
@@ -81,7 +81,7 @@ def on_delete_terraformresource(namespace, name, **_):
     subprocess.run(
         [
             'helm', 'uninstall', 
-            '{}-{}'.format(EASYAAS_PREFIX, name),
+            f'{name}.{WATCHED_RESOURCE_NAME}.{WATCHED_RESOURCE_GROUP}',
             '--debug',
             '--namespace', namespace,
         ],
