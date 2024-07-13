@@ -1,3 +1,9 @@
+easyaas:
+  docker:
+    registry: null
+    image: nilscan/terragrunt-runner
+    tag: 0.0.0
+
 managedBy: null
 easyaasResourceParams: {}
 resource: {}

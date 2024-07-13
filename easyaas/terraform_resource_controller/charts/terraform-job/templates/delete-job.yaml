@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "terraform-job.fullname" . }}-destroy
+  name: {{ include "terraform-job.name" . }}-destroy
   annotations:
     helm.sh/hook: pre-delete
     helm.sh/hook-delete-policy: before-hook-creation # Keep the job until we need to run a new one
@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: tf
-          image: easyaas-registry.web:12345/terragrunt-runner
-          imagePullPolicy: Never # Import images with just import-docker
+          image: {{ if .Values.easyaas.docker.registry }}{{ .Values.easyaas.docker.registry }}/{{end}}{{ .Values.easyaas.docker.image }}:{{ .Values.easyaas.docker.tag }}
+          imagePullPolicy: Always # Import images with just import-docker
           env:
             - name: TERRAGRUNT_CONFIG
               value: {{ default .Values.easyaasResourceParams.terragruntFile "/app/terragrunt-config/terragrunt.hcl" }}
