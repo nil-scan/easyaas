@@ -2,7 +2,7 @@ default:
 	@just --choose
 
 build: zip build-docker
-local-dev: zip repo-server poetry run-all
+local-dev: zip repo-server poetry
 
 install:
   kubectl apply -f easyaas/terraform_resource_controller/crds
@@ -27,12 +27,10 @@ poetry:
 	poetry install
 
 test:
-	PYTHONPATH=. poetry run pytest 
+	poetry run pytest 
 
-run-controllers:
-	PYTHONPATH=. bin/run_controllers.sh
+run:
+	bin/run_controllers.sh
 
 run-tfresource:
-	PYTHONPATH=. bin/run_terraform_controller.sh
-
-run-all: run-controllers run-tfresource
+	bin/run_terraform_controller.sh
