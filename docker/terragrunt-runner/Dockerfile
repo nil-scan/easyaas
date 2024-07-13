@@ -18,7 +18,7 @@ RUN addgroup -S tfuser \
     && mkdir -p $TERRAFORM_INSTALL_DIR && chown tfuser:tfuser $TERRAFORM_INSTALL_DIR
 
 # Install dependencies
-RUN apk add --update --no-cache bash git openssh curl ca-certificates libc6-compat && update-ca-certificates
+RUN apk add --update --no-cache bash git openssh curl ca-certificates libc6-compat tzdata && update-ca-certificates
 
 # Install terragrunt
 RUN TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_${ARCH}" \
