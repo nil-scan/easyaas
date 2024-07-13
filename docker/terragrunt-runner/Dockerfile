@@ -4,15 +4,18 @@ ARG ARCH=amd64
 ARG TERRAGRUNT_VERSION=v0.48.1
 ARG TFSWITCH_VERSION=latest
 ARG TERRAFORM_ROOT_DIR=/terraform
+ARG TERRAFORM_INSTALL_DIR=/home/tfuser/bin
 
 # The terraform bin dir is not user overridable in current version of tfswitch
-ENV PATH=$PATH:/home/tfuser/bin
+ENV PATH=$PATH:$TERRAFORM_INSTALL_DIR
 # Base dir for the terraform root config
 ENV TERRAFORM_ROOT_DIR=$TERRAFORM_ROOT_DIR
 # Subdirectory under $TERRAFORM_ROOT_DIR for the terraform root config
 ENV TERRAFORM_DIR=
 
-RUN addgroup -S tfuser && adduser -S tfuser -G tfuser
+RUN addgroup -S tfuser \
+    && adduser -S tfuser -G tfuser -h /home/tfuser\
+    && mkdir -p $TERRAFORM_INSTALL_DIR && chown tfuser:tfuser $TERRAFORM_INSTALL_DIR
 
 # Install dependencies
 RUN apk add --update --no-cache bash git openssh curl ca-certificates libc6-compat && update-ca-certificates
@@ -27,7 +30,8 @@ RUN curl -L --proto "=https" --tlsv1.2 https://raw.githubusercontent.com/warrens
 
 ADD run.sh /app/run.sh
 RUN chown 1001:1001 /app/run.sh && chmod +x /app/run.sh
-RUN mkdir -p "${TERRAFORM_ROOT_DIR}" && chown tfuser:tfuser "${TERRAFORM_ROOT_DIR}"
+RUN mkdir -p "${TERRAFORM_ROOT_DIR}" \
+    && chown tfuser:tfuser "${TERRAFORM_ROOT_DIR}"
 
 USER tfuser
 WORKDIR $TERRAFORM_ROOT_DIR

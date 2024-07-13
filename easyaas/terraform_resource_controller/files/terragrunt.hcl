@@ -14,6 +14,11 @@ generate "tfvars_from_spec" {
 
 terraform {
   source = local.terraform_source
+
+  before_hook "install_terraform" {
+    commands = ["init"]
+    execute  = ["tfswitch", "--default=$(tfswitch --show-latest)"]
+  }
 }
 
 generate "backend" {
