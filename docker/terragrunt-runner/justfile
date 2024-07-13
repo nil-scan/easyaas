@@ -1,0 +1,7 @@
+build:
+  docker build -t nilscan/terragrunt-runner:0.0.0 .
+
+push:
+  docker push nilscan/terragrunt-runner:0.0.0
+
+publish: build push
