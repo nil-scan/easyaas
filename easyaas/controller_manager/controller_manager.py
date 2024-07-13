@@ -24,7 +24,7 @@ def on_change(namespace, name, spec, **_):
     """
     # Install the helm chart
     # FIXME: This should be done in a job
-    [_plural, *group] = spec['crd'].split('.')
+    [plural, *group] = spec['crd'].split('.')
     group = '.'.join(group)
     subprocess.run(
         [
