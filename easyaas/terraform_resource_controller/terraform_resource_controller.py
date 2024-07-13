@@ -48,15 +48,15 @@ def on_change_terraformresource(namespace, name, body, meta, spec, **_):
         'resource': dict(body),
         'resourceMeta': dict(meta),
 
-        # Inject additional values to the resource spec
+        # Merge additional values to the resource spec
         # This will be added to the terraform.tfvars but doesn't cause issues
         # if the template doesn't define the corresponding variables
-        'resourceSpec': dict(spec).update({
+        'resourceSpec': dict(spec) | {
             'metadataName':  meta.name,
             'metadataNamespace': meta.namespace,
             'metadataLabels': dict(meta.labels),
             'metadataAnnotations': dict(meta.annotations),
-        }),
+        },
         'terragrunt': terragrunt_config,
     }
 

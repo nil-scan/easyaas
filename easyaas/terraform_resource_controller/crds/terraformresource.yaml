@@ -61,6 +61,19 @@ spec:
                         type: string
                       namespace:
                         type: string
+                extraClusterRoles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      apiGroup:
+                        type: string
+                        default: rbac.authorization.k8s.io/v1
+                      kind:
+                        type: string
+                        default: ClusterRole
+                      name:
+                        type: string
                 extraEnvVariables:
                   type: array
                   items:
