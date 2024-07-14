@@ -1,7 +1,9 @@
-build:
-  docker build -t nilscan/terragrunt-runner:0.0.0 .
+default_repo := 'nilscan'
 
-push:
-  docker push nilscan/terragrunt-runner:0.0.0
+build repo=default_repo:
+  docker build -t {{repo}}/terragrunt-runner:0.0.0 .
 
-publish: build push
+push repo=default_repo:
+  docker push {{repo}}/terragrunt-runner:0.0.0
+
+publish repo=default_repo: (build repo) (push repo)
