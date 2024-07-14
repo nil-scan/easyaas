@@ -8,6 +8,7 @@ authors = ["Nilscan"]
 python = "^3.9"
 kopf = {extras = ["dev"], version = "^1.36.1"}
 kubernetes = "^26.1.0"
+tzdata = "^2024.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.0"
