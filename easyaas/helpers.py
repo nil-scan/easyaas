@@ -5,6 +5,21 @@ from zoneinfo import ZoneInfo
 import yaml, json
 
 import kubernetes
+import kopf
+
+global kube_client
+kube_client = None
+
+def kubelogin(**kwargs):
+    """
+    Login to kube using kubernetes.client
+    Caches the connection parameters so that the cluster stays the same
+    even if the kubecontext changes
+    """
+    global kube_client
+    if kube_client is None:
+        kube_client = kopf.login_via_client(**kwargs)
+    return kube_client
 
 class TerraformResourceException(Exception):
     pass

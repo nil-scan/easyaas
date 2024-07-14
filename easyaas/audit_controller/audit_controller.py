@@ -1,6 +1,12 @@
 import kopf
+from easyaas.helpers import kubelogin
 
 EVENT = 25
+
+
+@kopf.on.login()
+def login_fn(**kwargs):
+    return kubelogin(**kwargs)
 
 # @kopf.on.create("easyaas.dev", kopf.EVERYTHING)
 @kopf.on.create(category="easyaas")

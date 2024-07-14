@@ -2,7 +2,11 @@ import os
 import kopf
 import logging
 import subprocess
-from easyaas.helpers import update_condition, load_from_yaml, update_array, current_file_path
+from easyaas.helpers import current_file_path, kubelogin
+
+@kopf.on.login()
+def login_fn(**kwargs):
+    return kubelogin(**kwargs)
 
 @kopf.on.startup()
 def configure(memo: kopf.Memo, settings: kopf.OperatorSettings, **_):

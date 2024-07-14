@@ -5,14 +5,18 @@ import kubernetes
 import json
 import subprocess
 
-from easyaas.helpers import update_condition, current_file_path
+from easyaas.helpers import update_condition, current_file_path, kubelogin
 from .consts import WATCHED_RESOURCE_GROUP, WATCHED_RESOURCE_NAME, MANAGED_BY
+
+@kopf.on.login()
+def login_fn(**kwargs):
+    return kubelogin(**kwargs)
 
 # Controller configuration
 @kopf.on.startup()
 def configure(memo: kopf.Memo, settings: kopf.OperatorSettings, **_):
     print('starting up')
-
+    
     # Log errors as k8s events
     settings.posting.enabled = os.environ.get('EASYAAS_EVENT_ON_ERROR', '0') == 'true'
     settings.posting.level = int(os.environ.get('EASYAAS_LOG_LEVEL', logging.ERROR))
