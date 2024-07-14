@@ -6,14 +6,14 @@
   "configurations": [
     {
       "name": "Debug controller manager",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
-      "program": ".venv/bin/kopf",
+      "program": ".venv/Scripts/kopf",
       "cwd": "${workspaceFolder}",
       "args": [
         "run",
         "-m",
-        "controllers.controller_manager"
+        "easyaas.controller_manager"
       ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"
@@ -21,17 +21,17 @@
     },
     {
       "name": "Debug terraform resource controller",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
-      "program": ".venv/bin/kopf",
+      "program": ".venv/Scripts/kopf",
       "cwd": "${workspaceFolder}",
       "args": [
         "run",
         "-m",
-        "controllers.terraform_resource_controller"
+        "easyaas.terraform_resource_controller"
       ],
       "env": {
-        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        // "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
         "EASYAAS_WATCHED_RESOURCE_NAME": "ephemeralnamespaces",
       }
     }
